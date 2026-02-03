@@ -77,7 +77,7 @@ type AdminTab = 'courses' | 'users' | 'settings';
                     
                     <div class="flex items-center gap-3">
                     <button (click)="editCourse(course)" class="px-5 py-2 bg-slate-800 hover:bg-white/10 text-cyan-400 border border-cyan-500/20 rounded-lg text-sm font-bold transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.2)]">Edit Details</button>
-                    <button (click)="deleteCourse(course.id, $event)" class="px-5 py-2 bg-red-600/20 hover:bg-red-600 text-red-500 border border-red-500/50 rounded-lg text-sm font-bold transition-all z-10 cursor-pointer">Delete</button>
+                    <button (click)="deleteCourse(course.id, $event)" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white border border-red-500/50 rounded-lg text-sm font-bold transition-all z-10 relative cursor-pointer shadow-lg shadow-red-600/20">Delete</button>
                     </div>
                 </div>
 
@@ -479,6 +479,7 @@ export class AdminDashboardComponent {
   deleteCourse(id: string, event?: Event) {
     if (event) {
         event.stopPropagation();
+        event.preventDefault();
     }
     if(confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
       this.data.deleteCourse(id);
