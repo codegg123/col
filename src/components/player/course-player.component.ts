@@ -220,6 +220,8 @@ import { AuthService } from '../../services/auth.service';
                     (click)="togglePlay()"
                     (error)="handleVideoError()"
                     crossorigin="anonymous"
+                    autoplay
+                    playsinline
                   ></video>
                   
                   @if (videoError()) {
@@ -296,7 +298,7 @@ import { AuthService } from '../../services/auth.service';
                   </div>
                </div>
              } @else {
-               <!-- PDF Viewer (using iframe for robustness) -->
+               <!-- PDF Viewer (using object tag for better embedding) -->
                <div class="w-full h-full flex flex-col bg-slate-900">
                   <div class="h-14 bg-slate-800/50 flex items-center justify-between px-6 border-b border-white/5">
                      <span class="text-sm font-bold text-slate-300 flex items-center gap-2">
@@ -312,11 +314,16 @@ import { AuthService } from '../../services/auth.service';
                      </div>
                   </div>
                   <div class="w-full h-full bg-slate-800 relative">
-                     <iframe 
-                       [src]="safePdfUrl()" 
-                       class="w-full h-full border-none"
-                       title="PDF Viewer"
-                     ></iframe>
+                     <object 
+                       [data]="safePdfUrl()" 
+                       type="application/pdf"
+                       class="w-full h-full block"
+                     >
+                       <div class="flex flex-col items-center justify-center h-full text-slate-400 p-8 text-center">
+                           <p class="mb-4 text-lg">Unable to display PDF directly.</p>
+                           <a [href]="currentLesson()?.url" target="_blank" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-colors">Download PDF</a>
+                       </div>
+                     </object>
                   </div>
                </div>
              }
