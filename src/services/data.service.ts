@@ -115,6 +115,19 @@ export class DataService {
     if (storedCourses) {
       try {
         const parsedCourses: Course[] = JSON.parse(storedCourses);
+        
+        // AUTO-FIX: Upgrade legacy HTTP URLs to HTTPS to prevent mixed content errors
+        parsedCourses.forEach(c => c.modules.forEach(m => m.lessons.forEach(l => {
+             if (l.url && typeof l.url === 'string') {
+                 if (l.url.includes('http://commondatastorage.googleapis.com')) {
+                     l.url = l.url.replace('http://', 'https://');
+                 }
+                 if (l.url.includes('commondatastorage.googleapis.com')) {
+                     l.url = l.url.replace('commondatastorage.googleapis.com', 'storage.googleapis.com');
+                 }
+             }
+        })));
+
         this.courses.set(parsedCourses);
         // Hydrate local blobs
         this.hydrateLocalContent(parsedCourses);
